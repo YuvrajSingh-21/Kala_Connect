@@ -267,7 +267,11 @@ body {
             {% for artist in artists %}
                 <div class="artisan-card">
                 <div class="card-image">
-                    <img src="{{artist.profile.url}}" alt="{{artist.art_category}}">
+                    {% if artist.profile %}
+                        <img src="{{ artist.profile.url }}" alt="{{ artist.art_category }}">
+                    {% else %}
+                        <img src="https://i.pinimg.com/736x/62/01/0d/62010d848b790a2336d1542fcda51789.jpg" alt="No profile picture">
+                    {% endif %}
                     {% comment %} <div class="specialty-badge block-printing">Block Printing</div>
                     <div class="rating">
                         <span class="stars">★</span>
