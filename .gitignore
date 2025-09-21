@@ -1,0 +1,15 @@
+.env
+
+# Python cache
+__pycache__/
+
+# Virtual environment folder (use the name of your folder)
+venv/
+env/
+
+# Static files directory (Render will create this)
+staticfiles/
+
+# IDE / Editor folders
+.vscode/
+.idea/

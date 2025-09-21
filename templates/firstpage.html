@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Craft Aid - AI-Powered Artisan Platform</title>
+  <link rel="stylesheet" href="{% static "css/firstpage.css" %}">
+</head>
+<body>
+  <!-- Decorative craft elements -->
+  <div class="craft-decoration"></div>
+  <div class="craft-decoration"></div>
+  <div class="craft-decoration"></div>
+  <div class="craft-decoration"></div>
+
+  <!-- Floating particles -->
+  <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 70%; animation-delay: 6s;"></div>
+  <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+  <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
+
+  <div class="container">
+    <div class="badge" id="badge">
+      AI-Powered Artisan Platform
+    </div>
+
+    <h1 class="main-heading">
+      Empowering Local
+      <span class="highlight">Artisans</span>
+    </h1>
+
+    <p class="subtitle">
+      Bridge traditional craftsmanship with modern audiences<br>
+      through AI-powered storytelling and marketing tools
+    </p>
+
+    <div class="cta-buttons">
+      <a href="/login/">
+        <button class="btn btn-primary" id="startJourneyBtn" >
+          Start Your Journey
+        </button>
+      </a>
+      <a href="/homepage/">
+        <button class="btn btn-secondary" id="exploreStoriesBtn">
+          Explore Stories
+        </button>
+      </a>
+    </div>
+
+    {% comment %} <div class="stats">
+      <div class="stat">
+        <span class="stat-number" id="artisans">10K+</span>
+        <span class="stat-label">Artisans Connected</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number" id="crafts">50+</span>
+        <span class="stat-label">Traditional Crafts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number" id="success">95%</span>
+        <span class="stat-label">Success Rate</span>
+      </div>
+    </div> {% endcomment %}
+  </div>
+
+  <script>
+    // Animate stats on load
+    function animateNumber(element, target, suffix = '') {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target + suffix;
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current) + suffix;
+        }
+      }, 40);
+    }
+
+    // Start animations when page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        animateNumber(document.getElementById('artisans'), 10, 'K+');
+        animateNumber(document.getElementById('crafts'), 50, '+');
+        animateNumber(document.getElementById('success'), 95, '%');
+      }, 1500);
+    });
+
+    // Button interactions
+    {% comment %} document.getElementById('startJourneyBtn').addEventListener('click', (event) => {
+      createRipple(event);
+      setTimeout(() => {
+        alert('Welcome to your artisan journey! 🎨\n\nDiscover how AI can amplify your traditional craft and connect you with customers worldwide.');
+      }, 300);
+    });
+
+    document.getElementById('exploreStoriesBtn').addEventListener('click', (event) => {
+      createRipple(event);
+      setTimeout(() => {
+        alert('Explore Amazing Stories! ⚡\n\nDiscover how artisans are transforming their businesses with our AI-powered platform.');
+      }, 300);
+    }); {% endcomment %}
+
+    // Create ripple effect for buttons
+    function createRipple(event) {
+      const button = event.currentTarget;
+      const ripple = document.createElement('span');
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = event.clientX - rect.left - size / 2;
+      const y = event.clientY - rect.top - size / 2;
+
+      ripple.style.position = 'absolute';
+      ripple.style.width = size + 'px';
+      ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+      ripple.style.borderRadius = '50%';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.animation = 'ripple 0.6s ease-out';
+      ripple.style.pointerEvents = 'none';
+
+      button.style.position = 'relative';
+      button.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    }
+
+    // Add ripple animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Badge interaction
+    document.getElementById('badge').addEventListener('click', () => {
+      const badge = document.getElementById('badge');
+      badge.style.animation = 'none';
+      setTimeout(() => {
+        badge.style.animation = 'fadeInDown 0.5s ease-out';
+      }, 10);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && document.activeElement.classList.contains('btn')) {
+        document.activeElement.click();
+      }
+    });
+
+    // Mouse movement parallax effect
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+      
+      const decorations = document.querySelectorAll('.craft-decoration');
+      decorations.forEach((decoration, index) => {
+        const speed = (index + 1) * 0.5;
+        const x = mouseX * speed;
+        const y = mouseY * speed;
+        decoration.style.transform = `translate(${x}px, ${y}px) rotate(${x * 10}deg)`;
+      });
+    });
+
+    // Add accessibility
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('startJourneyBtn').setAttribute('aria-label', 'Start your artisan journey with AI tools');
+      document.getElementById('exploreStoriesBtn').setAttribute('aria-label', 'Explore success stories from other artisans');
+    });
+
+    // Performance optimization
+    let ticking = false;
+    function updateParallax() {
+      ticking = false;
+    }
+
+    document.addEventListener('mousemove', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    });
+
+    // Log performance
+    window.addEventListener('load', () => {
+      console.log(`🎨 Digital Craft Aid loaded in ${performance.now().toFixed(2)}ms`);
+    });
+  </script>
+</body>
+</html>

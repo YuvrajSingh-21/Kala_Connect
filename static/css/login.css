@@ -1,0 +1,75 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url("https://4.img-dpreview.com/files/p/E~C12x0S1897x1067T1200x675~articles/3942129987/galeryst-michael-scherotter-banner.jpeg") no-repeat center center/cover;
+    }
+
+    .login-container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .login-container h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #e08049;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background: #7c0827;
+    }
+
+    .register-link {
+      margin-top: 1rem;
+      display: block;
+      color: #ddd;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #e17108;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    .login-container:hover {
+      backdrop-filter: blur(2px);
+      scale: 1.02;
+      transition: all 0.7s ease;
+        box-shadow: 0 0 25px rgba(255, 246, 246, 0.7);
+    }

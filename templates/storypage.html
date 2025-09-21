@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Transform Your Craft into Compelling Stories{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/storypage.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <div class="ai-badge">
+            <div class="ai-icon"></div>
+            AI-Powered Storytelling
+        </div>
+        <h1 class="main-title">Transform Your Craft into<br><span class="highlight">Compelling Stories</span></h1>
+        <p class="subtitle">Our AI helps you create engaging narratives that connect your traditional<br>craftsmanship with modern audiences</p>
+    </div>
+
+    <div class="craft-input-section">
+        <div class="section-header">
+            <span class="section-icon">🎨</span>
+            <h2 class="section-title">Describe Your Craft</h2>
+        </div>
+        <p class="section-subtitle">Give a few words about your artisan work, materials, and techniques</p>
+        <textarea class="craft-textarea" placeholder="e.g., pottery, clay, heritage, tradition..."></textarea>
+    </div>
+
+    <!-- Generate Button -->
+    <button class="generate-btn" onclick="generateStory()">
+        <span class="generate-text">✨ Generate AI Story</span>
+        <div class="loading hidden">
+            <div class="loading-spinner"></div>
+            <span>Generating...</span>
+        </div>
+    </button>
+
+    <!-- Story Section -->
+    <div class="story-output-section">
+        <div class="section-header">
+            <span class="section-icon">📖</span>
+            <h2 class="section-title">Your Story</h2>
+        </div>
+        <p class="section-subtitle">AI-generated compelling narrative for your craft</p>
+        
+        <div class="story-placeholder" id="storyContent">
+            <div class="story-placeholder-icon">✨</div>
+            <p>Your AI-generated story will appear here</p>
+        </div>
+    </div>
+
+    <!-- Save Button -->
+    <button class="generate-btn save-btn" onclick="saveStory()">
+        💾 Save Story
+    </button>
+
+    <!-- Feature Cards -->
+    <div class="features-grid">
+        <div class="feature-card instant-stories">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Instant Stories</h3>
+            <p class="feature-description">Generate compelling narratives in seconds.</p>
+        </div>
+        <div class="feature-card emotional-connection">
+            <div class="feature-icon">💛</div>
+            <h3 class="feature-title">Emotional Connection</h3>
+            <p class="feature-description">Create stories that resonate with customers.</p>
+        </div>
+        <div class="feature-card cultural-heritage">
+            <div class="feature-icon">🎭</div>
+            <h3 class="feature-title">Cultural Heritage</h3>
+            <p class="feature-description">Preserve and share traditional stories.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+let currentStory = "";
+
+function generateStory() {
+    const textarea = document.querySelector('.craft-textarea');
+    const generateBtn = document.querySelector('.generate-btn');
+    const generateText = document.querySelector('.generate-text');
+    const loading = document.querySelector('.loading');
+    const storyContent = document.getElementById('storyContent');
+
+    if (!textarea.value.trim()) {
+        alert('Please describe your craft first!');
+        return;
+    }
+
+    // Show loading
+    generateText.style.display = 'none';
+    loading.classList.remove('hidden');
+    generateBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("text", textarea.value);
+
+    fetch("{% url 'preview_story' %}", {  // ✅ Updated endpoint
+        method: "POST",
+        body: formData,
+        headers: { "X-CSRFToken": csrftoken }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            storyContent.innerHTML = `<p style="color:red;">❌ ${data.error}</p>`;
+        } else {
+            currentStory = data.story_text;
+            storyContent.innerHTML = `<div style="text-align:left; color:#333; line-height:1.8;">${currentStory}</div>`;
+        }
+    })
+    .catch(err => {
+        storyContent.innerHTML = `<p style="color:red;">❌ ${err}</p>`;
+    })
+    .finally(() => {
+        generateText.style.display = 'inline';
+        loading.classList.add('hidden');
+        generateBtn.disabled = false;
+    });
+}
+
+function saveStory() {
+    if (!currentStory) {
+        alert("No story to save. Please generate first!");
+        return;
+    }
+    const formData = new FormData();
+    formData.append("story_text", currentStory); // ✅ Match new view
+
+    fetch("{% url 'save_story' %}", {
+        method: "POST",
+        body: formData,
+        headers: { "X-CSRFToken": csrftoken }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ " + data.message);
+        } else {
+            alert("❌ Failed: " + (data.error || "Unknown error"));
+        }
+    });
+}
+
+// Ripple effect (unchanged)
+document.querySelectorAll('.feature-card, .generate-btn').forEach(element => {
+    element.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        setTimeout(() => { ripple.remove(); }, 600);
+    });
+});
+</script>
+{% endblock %}

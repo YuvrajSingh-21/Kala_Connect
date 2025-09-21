@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Artist Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css\artistprofile.css' %}">
+{% endblock %} 
+
+{% block content %}
+<div class="profile-container">
+  <div class="profile-header">
+    <a href="#imgModal">
+      {% if artist.profile %}
+        <img src="{{ artist.profile.url }}" alt="Profile Picture" class="profile-pic">
+      {% else %}
+        <img src="https://www.freepik.com/free-photos-vectors/profile" alt="Profile Picture" class="profile-pic">
+      {% endif %}
+    </a>
+    <div class="profile-info-header">
+      <h2 class="profile-name">{{ artist.name }}</h2>
+      <p class="profile-username">@{{ artist.username }}</p>
+    </div>0
+  </div>
+
+  <div class="profile-info">
+    <div class="info-row"><span class="info-label">Full Name:</span><span class="info-value">{{ artist.name }}</span></div>
+    <div class="info-row"><span class="info-label">Email:</span><span class="info-value">{{ artist.email }}</span></div>
+    <div class="info-row"><span class="info-label">Contact No:</span><span class="info-value">{{ artist.contact }}</span></div>
+    <div class="info-row"><span class="info-label">Address:</span><span class="info-value">{{ artist.address }}</span></div>
+    <div class="info-row"><span class="info-label">State:</span><span class="info-value">{{ artist.state }}</span></div>
+    <div class="info-row"><span class="info-label">About:</span><span class="info-value">{{ artist.about }}</span></div>
+    <div class="info-row"><span class="info-label">Art Category:</span><span class="info-value">{{ artist.art_category }}</span></div>
+  </div>
+
+  <button class="edit-btn">✏️ Edit Profile</button>
+
+  <div class="story-section">
+    <a href="{% url 'art_gallery' %}" class="story-btn">📖 Your Story Page</a>
+  </div>
+
+  <div class="post-card">
+    <div class="post-title">🖼️ Create Your First Post</div>
+    <div class="post-subtitle">Share your art with the world</div>
+  </div>
+</div>
+
+<!-- Fullscreen Modal -->
+<div id="imgModal" class="modal">
+  <a href="#">
+    {% if artist.profile %}
+      <img src="{{ artist.profile.url }}" alt="Full Size Profile">
+    {% else %}
+      <img src="https://via.placeholder.com/600" alt="Full Size Profile">
+    {% endif %}
+  </a>
+</div>
+{% endblock %}

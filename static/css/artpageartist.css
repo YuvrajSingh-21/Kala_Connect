@@ -1,0 +1,175 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-attachment: fixed;
+    min-height: 100vh;
+    background: url("../images/D.jpg") no-repeat center center/cover;
+}
+.h1-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #f4511e;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    font-size: 2.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 15px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, text-shadow 0.3s ease;
+    display: inline-block;
+    font-family:'Courier New', Courier, monospace;
+}
+.h1-container h1{
+    width: fit-content;
+}
+
+h1:hover {
+    transform: scale(1.05);
+    text-shadow: 4px 4px 12px rgba(0,0,0,0.9);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+
+
+/* Outer card */
+.outer-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    padding: 20px;
+    margin: 25px auto;
+    max-width: 950px;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.outer-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+}
+
+/* Inner card */
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 50px; /* give space for buttons */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+}
+
+.card img {
+    width: 40%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-content {
+    width: 60%;
+    padding: 20px;
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #222;
+}
+
+.card .category {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.card button {
+    padding: 10px 18px;
+    background: #f4511e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card button:hover {
+    background: #e13e10;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Alternate layout for even cards */
+.card.even {
+    flex-direction: row-reverse;
+}
+
+/* Edit/Delete buttons */
+.outer-card .edit-btn,
+.outer-card .delete-btn {
+    position: absolute;
+    bottom: 15px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: linear-gradient(135deg, #FFD54F, #FF9800);
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    width: fit-content;
+}
+
+.outer-card .edit-btn:hover,
+.outer-card .delete-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.outer-card .edit-btn {
+    left: 15px;
+}
+
+.outer-card .delete-btn {
+    right: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+    flex-direction: column;
+    }
+    .card.even {
+    flex-direction: column;
+    }
+    .card img, .card-content {
+    width: 100%;
+    }
+}

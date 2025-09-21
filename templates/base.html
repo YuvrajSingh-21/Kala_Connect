@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Artisans Assistant{% endblock %}</title>
+ <link rel="stylesheet" href="{% static 'css/base.css' %}">
+ {% block extra_css %}{% endblock %}
+  
+</head>
+<body>
+
+  <div class="main-container">
+    <!-- Header -->
+    <div class="header">
+      <span class="hamburger" onclick="toggleMenu()">☰</span>
+      
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button class="search-btn" onclick="performSearch()">🔍</button>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div>
+        <div class="sidebar-header">My App</div>
+        <div class="sidebar-links">
+          <a href="/gallery"><span>🏠</span><span>Home</span></a>
+          <a href="/profile"><span>👤</span><span>Profile</span></a>
+          {% comment %} <a href="javascript:void(0)" onclick="loadPage('artpageartist.html')">🎨 Art Page</a> {% endcomment %}
+           <a href="/story"><span>📖</span><span>Story Page</span></a>
+          {% comment %} <a href="javascript:void(0)" onclick="loadPage('storypage.html')"> e</a> {% endcomment %}
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="#"><span>⚙</span><span>Settings</span></a>
+        <a href="#"><span>🚪</span><span>Logout</span></a>
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+    <!-- Main Content -->
+    <div id="content-area" class="content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Asteroids</p>
+      <hr>
+      <p><strong>Contact Us</strong></p>
+      <p>📞 +91 9876543210</p>
+      <p>📧 support@asteroidsmail.com</p>
+      <p>🏠 221B Baker Street, Udaipur, Rajasthan</p>
+    </footer>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("sidebar").classList.toggle("active");
+      document.getElementById("overlay").classList.toggle("active");
+    }
+
+    function closeMenu() {
+      document.getElementById("sidebar").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
+    }
+
+    function performSearch() {
+      const query = document.getElementById("searchInput").value;
+      if(query.trim() === "") {
+        alert("Please enter something to search.");
+      } else {
+        alert("Searching for: " + query);
+      }
+    }
+
+    function loadPage(page) {
+      fetch(page)
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("content-area").innerHTML = data;
+          closeMenu();
+        })
+        .catch(err => console.error("Error loading page:", err));
+    }
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ artist.name }}'s Art Gallery{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css\artpageartist.css' %}">
+{% endblock %}
+{% block content %}
+  {% comment %} <div class="h1-container">
+  <h1>Art Gallery</h1>
+</div> {% endcomment %}
+<div class="h1-container">
+  <h1>{{ artist.name }}'s Art Gallery</h1>
+</div>
+
+{% if no_artworks %}
+  {% comment %} <p>No artworks found. <a href="{% url 'add_artwork' %}">Add your first artwork</a></p> {% endcomment %}
+   <p>No artworks found.</p>
+{% else %}
+  {% for art in artworks %}
+    <div class="outer-card">
+      <div class="card {% cycle 'odd' 'even' %}">
+        <img src="{{ art.art_image.url }}" alt="{{ art.art_name }}">
+        <div class="card-content">
+          <h2>{{ art.art_name }}</h2>
+          <div class="category">{{ art.art_category }}</div>
+          <p>{{ art.description }}</p>
+          <button>View Story of the Art</button>
+        </div>
+      </div>
+      <a href="#" class="edit-btn">Edit</a>
+      <a href="#" class="delete-btn">Delete</a>
+    </div>
+  {% endfor %}
+{% endif %}
+
+
+  {% comment %} <!-- Outer Card 1 -->
+  <div class="outer-card">
+    <div class="card odd">
+      <img src="https://via.placeholder.com/500x300" alt="Art Image">
+      <div class="card-content">
+        <h2>Sunset Pottery</h2>
+        <div class="category">Pottery</div>
+        <p>A traditional handcrafted clay pot reflecting the warmth of the sunset.</p>
+        <button>View Story of the Art</button>
+      </div>
+    </div>
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div>
+
+  <!-- Outer Card 2 -->
+  <div class="outer-card">
+    <div class="card even">
+      <img src="https://via.placeholder.com/500x300" alt="Art Image">
+      <div class="card-content">
+        <h2>Golden Artwork</h2>
+        <div class="category">Gold Art</div>
+        <p>Intricate patterns designed with golden hues showcasing cultural heritage.</p>
+        <button>View Story of the Art</button>
+      </div>
+    </div>
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div>
+
+  <!-- Outer Card 3 -->
+  <div class="outer-card">
+    <div class="card odd">
+      <img src="https://via.placeholder.com/500x300" alt="Art Image">
+      <div class="card-content">
+        <h2>Abstract Colors</h2>
+        <div class="category">Abstract</div>
+        <p>A vibrant blend of colors capturing the emotions of creativity.</p>
+        <button>View Story of the Art</button>
+      </div>
+    </div>
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div>
+
+  <!-- Outer Card 4 -->
+  <div class="outer-card">
+    <div class="card even">
+      <img src="https://via.placeholder.com/500x300" alt="Art Image">
+      <div class="card-content">
+        <h2>Stone Sculpture</h2>
+        <div class="category">Sculpture</div>
+        <p>Beautifully carved stone sculpture symbolizing strength and elegance.</p>
+        <button>View Story of the Art</button>
+      </div>
+    </div>
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div> {% endcomment %}
+  {% endblock %}
