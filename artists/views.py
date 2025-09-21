@@ -45,25 +45,53 @@ def register_artist(request):
     return render(request, 'registrationartist.html', {'form': form})
 
 
+# def login_view(request):
+#     """
+#     Handles user login and redirects to the artist's personal art gallery.
+#     """
+#     if request.method == 'POST':
+#         username_from_form = request.POST.get('username')
+#         password_from_form = request.POST.get('password')
+#         try:
+#             artist = Artist.objects.get(username=username_from_form)
+#             if artist.password == password_from_form:
+#                 request.session['username'] = artist.username
+#                 # ✅ CORRECTED: Redirect to the personal art gallery after login
+#                 return redirect('art_gallery') 
+#             else:
+#                 messages.error(request, 'Invalid username or password.')
+#         except Artist.DoesNotExist:
+#             messages.error(request, 'Invalid username or password.')
+#     return render(request, 'login.html')
 def login_view(request):
     """
-    Handles user login and redirects to the artist's personal art gallery.
+    Handles user login and redirects correctly.
     """
     if request.method == 'POST':
         username_from_form = request.POST.get('username')
         password_from_form = request.POST.get('password')
         try:
             artist = Artist.objects.get(username=username_from_form)
+            
+            # ⚠️ SECURITY NOTE: This password check is insecure. See below.
             if artist.password == password_from_form:
                 request.session['username'] = artist.username
-                # ✅ CORRECTED: Redirect to the personal art gallery after login
-                return redirect('art_gallery') 
+                
+                # --- THIS IS THE NEW LOGIC ---
+                # Check if the URL has a 'next' parameter
+                next_page = request.GET.get('next')
+                if next_page:
+                    # If it exists, redirect the user to that page
+                    return redirect(next_page)
+                else:
+                    # Otherwise, send them to the default gallery page
+                    return redirect('art_gallery') 
             else:
                 messages.error(request, 'Invalid username or password.')
         except Artist.DoesNotExist:
             messages.error(request, 'Invalid username or password.')
+            
     return render(request, 'login.html')
-
 #
 # --- Logged-In Artist Views ---
 #
@@ -165,25 +193,42 @@ def save_story(request):
 from django.contrib.auth.decorators import login_required
 from .forms import ArtForm
 
-@login_required
 def add_artwork(request):
+    """
+    Handles the "Add Artwork" page for a logged-in artist.
+    """
+    # 1. Check if the user is logged in using your session method
+    username = request.session.get('username')
+    if not username:
+        # If not logged in, redirect to the login page
+        return redirect('login')
+
+    # 2. Get the Artist object for the logged-in user
+    try:
+        artist = Artist.objects.get(username=username)
+    except Artist.DoesNotExist:
+        # If the user in the session doesn't exist, send them to login
+        return redirect('login')
+
+    # 3. Process the form
     if request.method == 'POST':
+        # Pass POST data and uploaded files to the form
         form = ArtForm(request.POST, request.FILES)
         if form.is_valid():
-            # Create an Art object but don't save it yet
+            # Create the art object but don't save it yet
             art = form.save(commit=False)
             
-            # Set the artist automatically from the logged-in user's profile
-            # I'm assuming your User model has a related 'artist' object.
-            art.artist_name = request.user.artist 
+            # ✅ THIS IS THE KEY: Set the artist to the logged-in user
+            art.artist_name = artist
             
-            # Now save the fully populated object to the database
+            # Now, save the complete art object to the database
             art.save()
 
-            # Redirect to the gallery after saving
-            return redirect('artist_gallery') 
+            # Redirect to the artist's personal gallery page after success
+            return redirect('art_gallery')
     else:
         # If it's a GET request, just show a blank form
         form = ArtForm()
 
+    # Render the page with the form
     return render(request, 'add_art.html', {'form': form})
