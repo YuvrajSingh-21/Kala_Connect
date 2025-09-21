@@ -117,7 +117,6 @@
 <div class="form-container">
     <h2>Edit Your Profile</h2>
 
-    <!-- This form will now submit to your view -->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -128,16 +127,67 @@
             {% else %}
                 <p>No profile photo uploaded.</p>
             {% endif %}
+            
+            <label for="{{ form.profile.id_for_label }}">Change/Upload Photo</label>
+            {{ form.profile }}
         </div>
 
-        <!-- Render the form fields automatically -->
-        <!-- 'as_p' wraps each field in a <p> tag -->
-        {{ form.as_p }}
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Password</label>
+            {{ form.password }}
+            <small style="color: #555;">Leave blank to keep your current password.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.contact.id_for_label }}">Contact</label>
+            {{ form.contact }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.address.id_for_label }}">Address</label>
+            {{ form.address }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.state.id_for_label }}">State</label>
+            {{ form.state }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.about.id_for_label }}">About</label>
+            {{ form.about }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.art_category.id_for_label }}">Art category</label>
+            {{ form.art_category }}
+        </div>
 
         <div class="button-group">
             <button type="submit">Save Changes</button>
-            <a href="{% url 'artist_profile' %}" style="text-decoration: none; text-align: center; background: #888; color: white; padding: 14px; border-radius: 8px; flex: 1; font-weight: bold;">Cancel</a>
+            <a href="{% url 'artist_profile' %}">Cancel</a>
         </div>
     </form>
 </div>
 {% endblock %}
+
+
+
+
+
+
