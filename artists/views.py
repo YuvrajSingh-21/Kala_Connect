@@ -242,7 +242,7 @@ def logout_view(request):
         del request.session['username']
     except KeyError:
         pass
-    return redirect('firstpage')
+    return redirect('home')
 
 
 def edit_artwork(request, art_id):
@@ -273,7 +273,7 @@ def edit_artwork(request, art_id):
         form = ArtForm(instance=art)
 
     # Use the 'edit_art.html' template for the form
-    return render(request, 'artists/edit_art.html', {'form': form, 'art': art})
+    return render(request, 'edit_art.html', {'form': form, 'art': art})
 
 def delete_artwork(request, art_id):
     """
@@ -331,4 +331,4 @@ def edit_profile(request):
         # For a GET request, show the form pre-filled with the artist's current data
         form = ArtistForm(instance=artist)
 
-    return render(request, 'artists/edit_profile.html', {'form': form, 'artist': artist})
+    return render(request, 'edit_profile.html', {'form': form, 'artist': artist})
