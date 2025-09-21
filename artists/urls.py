@@ -20,5 +20,6 @@ urlpatterns = [
     path("story/", views.storypage, name="storypage"),
     path("preview-story/", views.preview_story, name="preview_story"),
     path("save-story/", views.save_story, name="save_story"),
+    path("add-artwork/", views.add_artwork, name="add_artwork"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

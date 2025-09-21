@@ -160,6 +160,10 @@ body {
     font-size: 0.95em;
     color: #666;
 }
+.post-card-link {
+  text-decoration: none; /* Removes the underline */
+  color: inherit;       /* Makes the text use the parent's color */
+}
 
 /* Fullscreen Image Modal */
 .modal {
@@ -217,10 +221,12 @@ body {
     <a href="{% url 'art_gallery' %}" class="story-btn">📖 Your Story Page</a>
   </div>
 
+  <a href="{% url 'add_artwork' %}" class="post-card-link">
   <div class="post-card">
     <div class="post-title">🖼️ Create Your First Post</div>
     <div class="post-subtitle">Share your art with the world</div>
   </div>
+</a>
 </div>
 
 <!-- Fullscreen Modal -->

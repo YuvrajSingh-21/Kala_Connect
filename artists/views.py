@@ -160,3 +160,30 @@ def save_story(request):
         except Artist.DoesNotExist:
             return JsonResponse({'error': 'Artist not found'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+from django.contrib.auth.decorators import login_required
+from .forms import ArtForm
+
+@login_required
+def add_artwork(request):
+    if request.method == 'POST':
+        form = ArtForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Create an Art object but don't save it yet
+            art = form.save(commit=False)
+            
+            # Set the artist automatically from the logged-in user's profile
+            # I'm assuming your User model has a related 'artist' object.
+            art.artist_name = request.user.artist 
+            
+            # Now save the fully populated object to the database
+            art.save()
+
+            # Redirect to the gallery after saving
+            return redirect('artist_gallery') 
+    else:
+        # If it's a GET request, just show a blank form
+        form = ArtForm()
+
+    return render(request, 'add_art.html', {'form': form})

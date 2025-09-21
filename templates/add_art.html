@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+  {% block title %}Add Artwork{% endblock %}
+  {% block extra_css %}
+   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: url("https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/1600/900/75/dam/wdpro-assets/things-to-do/more/shops/epcot/art-of-disney-epcot/art-of-disney-epcot-00.jpg?1661278228685") no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .edit-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 30px 40px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .edit-container h1 {
+      text-align: center;
+      color: #e80f0f;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+   .edit-container:hover{
+    scale: 1.07;
+    box-shadow: 0px 0px 8px 8px#e45304;
+    transition: 2s;
+
+   }
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #e80f0f;
+      box-shadow: 0 0 6px rgba(232, 15, 15, 0.4);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      flex: 1;
+      padding: 14px;
+      background: linear-gradient(135deg, #f4511e, #e13e10);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button-group button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+  {% endblock %}
+
+    {% block content %}
+  <div class="edit-container">
+    <h1>Add New Artwork</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="id_art_name">Art Name</label>
+        {{ form.art_name }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_art_category">Art Category</label>
+        <select name="art_category" id="id_art_category" required>
+          <option value="" selected>---------</option>
+          <option value="Painting">Painting</option>
+          <option value="Pottery">Pottery</option>
+          <option value="Sculpture">Sculpture</option>
+          <option value="Abstract">Abstract</option>
+          <option value="Jewelry">Jewelry</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="id_description">Art Description</label>
+        {{ form.description }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_art_image">Art Image</label>
+        {{ form.art_image }}
+      </div>
+
+      <div class="button-group">
+        <button type="submit">Save Artwork</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
