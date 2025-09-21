@@ -183,16 +183,16 @@ h1:hover {
 
 </style>
 {% endblock %}
-{% block content %}
+{% comment %} {% block content %}
   {% comment %} <div class="h1-container">
   <h1>Art Gallery</h1>
-</div> {% endcomment %}
+</div> 
 <div class="h1-container">
   <h1>{{ artist.name }}'s Art Gallery</h1>
 </div>
 
 {% if no_artworks %}
-  {% comment %} <p>No artworks found. <a href="{% url 'add_artwork' %}">Add your first artwork</a></p> {% endcomment %}
+  {% comment %} <p>No artworks found. <a href="{% url 'add_artwork' %}">Add your first artwork</a></p> 
    <p>No artworks found.</p>
 {% else %}
   {% for art in artworks %}
@@ -206,11 +206,52 @@ h1:hover {
           <button>View Story of the Art</button>
         </div>
       </div>
-      <a href="#" class="edit-btn">Edit</a>
-      <a href="#" class="delete-btn">Delete</a>
+      <a href="{% url 'edit_artwork' art.id %}" class="edit-btn">Edit</a>
+      <form method="post" action="{% url 'delete_artwork' art.id %}" 
+          onsubmit="return confirm('Are you sure you want to permanently delete this artwork?');" 
+          style="display: inline;">
+      
+      {% csrf_token %}
+      
+      <button type="submit" class="delete-btn">Delete</button>
+    </form>
+    </div>
+  {% endfor %}
+{% endif %} {% endcomment %}
+
+{% block content %}
+<div class="h1-container">
+  <h1>{{ artist.name }}'s Art Gallery</h1>
+</div>
+
+{% if no_artworks %}
+  <div class="no-artworks-container">
+    <p>You haven't added any artwork yet.</p>
+    <a href="{% url 'add_artwork' %}">Add Your First Artwork</a>
+  </div>
+{% else %}
+  {% for art in artworks %}
+    <div class="outer-card">
+      <div class="card {% cycle 'odd' 'even' %}">
+        <img src="{{ art.art_image.url }}" alt="{{ art.art_name }}">
+        <div class="card-content">
+          <h2>{{ art.art_name }}</h2>
+          <div class="category">{{ art.art_category }}</div>
+          <p>{{ art.description }}</p>
+          <button class="story-btn">View Story of the Art</button>
+        </div>
+      </div>
+      
+      <a href="{% url 'edit_artwork' art.id %}" class="edit-btn">Edit</a>
+      
+      <form method="post" action="{% url 'delete_artwork' art.id %}" onsubmit="return confirm('Are you sure you want to permanently delete this artwork?');" style="display: inline; position: absolute; bottom: 15px; right: 20px;">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn">Delete</button>
+      </form>
     </div>
   {% endfor %}
 {% endif %}
+
 
 
   {% comment %} <!-- Outer Card 1 -->

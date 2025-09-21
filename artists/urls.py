@@ -21,5 +21,8 @@ urlpatterns = [
     path("preview-story/", views.preview_story, name="preview_story"),
     path("save-story/", views.save_story, name="save_story"),
     path("add-artwork/", views.add_artwork, name="add_artwork"),
-
+    path("logout/", views.logout_view, name="logout"),
+    path('art/<int:art_id>/edit/', views.edit_artwork, name='edit_artwork'),
+    path('art/<int:art_id>/delete/', views.delete_artwork, name='delete_artwork'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

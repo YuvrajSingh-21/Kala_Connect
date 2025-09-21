@@ -1,6 +1,6 @@
 # In views.py
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import Artist, Art
@@ -151,7 +151,7 @@ def artist_artworks(request, username):
             'artworks': artworks,
             'no_artworks': not artworks.exists()
         }
-        return render(request, 'artpageartist.html', context)
+        return render(request, 'artpage.html', context)
     except Artist.DoesNotExist:
         return redirect('homepage')
 
@@ -232,3 +232,103 @@ def add_artwork(request):
 
     # Render the page with the form
     return render(request, 'add_art.html', {'form': form})
+
+
+def logout_view(request):
+    """
+    Handles user logout by clearing the session and redirecting to the login page.
+    """
+    try:
+        del request.session['username']
+    except KeyError:
+        pass
+    return redirect('firstpage')
+
+
+def edit_artwork(request, art_id):
+    """
+    Handles editing an existing piece of artwork.
+    """
+    username = request.session.get('username')
+    if not username:
+        return redirect('login')
+
+    # Get the specific art piece, or return a 404 error if it doesn't exist
+    art = get_object_or_404(Art, id=art_id)
+
+    # SECURITY CHECK: Ensure the logged-in user is the owner of the art
+    if art.artist_name.username != username:
+        # If not the owner, redirect them away (e.g., to their own gallery)
+        return redirect('art_gallery')
+
+    if request.method == 'POST':
+        # Pre-fill the form with the existing art instance
+        form = ArtForm(request.POST, request.FILES, instance=art)
+        if form.is_valid():
+            form.save()
+            # Redirect to the gallery after a successful edit
+            return redirect('art_gallery')
+    else:
+        # If it's a GET request, show the form pre-filled with the art's current data
+        form = ArtForm(instance=art)
+
+    # Use the 'edit_art.html' template for the form
+    return render(request, 'artists/edit_art.html', {'form': form, 'art': art})
+
+def delete_artwork(request, art_id):
+    """
+    Handles deleting a piece of artwork. This view now only accepts POST requests.
+    """
+    # 1. Security check: Only allow POST requests for deletion
+    if request.method != 'POST':
+        # If someone tries to access this URL directly, redirect them away.
+        return redirect('art_gallery')
+
+    # 2. Authentication check
+    username = request.session.get('username')
+    if not username:
+        return redirect('login')
+
+    # 3. Get the artwork and check for ownership
+    art = get_object_or_404(Art, id=art_id)
+    if art.artist_name.username != username:
+        # Prevent users from deleting other artists' work
+        return redirect('art_gallery')
+
+    # 4. If all checks pass, delete the artwork and redirect
+    art.delete()
+    # You can add a success message here if you like
+    # messages.success(request, f'"{art.art_name}" has been deleted.')
+    return redirect('art_gallery')
+
+def edit_profile(request):
+    """
+    Handles displaying and processing the artist profile edit form.
+    """
+    # 1. Get the username from the session and check if the user is logged in
+    username = request.session.get('username')
+    if not username:
+        return redirect('login')
+
+    # 2. Get the artist object for the logged-in user
+    try:
+        artist = Artist.objects.get(username=username)
+    except Artist.DoesNotExist:
+        # If user in session doesn't exist, log them out
+        del request.session['username']
+        return redirect('login')
+
+    # 3. Handle the form submission
+    if request.method == 'POST':
+        # Pre-populate the form with the artist's existing data
+        form = ArtistForm(request.POST, request.FILES, instance=artist)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            # Redirect back to the profile page to see the changes
+            return redirect('artist_profile') # Assumes you have a URL named 'artist_profile'
+    else:
+        # For a GET request, show the form pre-filled with the artist's current data
+        form = ArtistForm(instance=artist)
+
+    return render(request, 'artists/edit_profile.html', {'form': form, 'artist': artist})

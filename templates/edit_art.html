@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+  {% block title %}Add Artwork{% endblock %}
+  {% block extra_css %}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: url("https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/1600/900/75/dam/wdpro-assets/things-to-do/more/shops/epcot/art-of-disney-epcot/art-of-disney-epcot-00.jpg?1661278228685") no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .edit-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 30px 40px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .edit-container h1 {
+      text-align: center;
+      color: #e80f0f;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+   .edit-container:hover{
+    scale: 1.07;
+    box-shadow: 0px 0px 8px 8px#e45304;
+    transition: 2s;
+
+   }
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #e80f0f;
+      box-shadow: 0 0 6px rgba(232, 15, 15, 0.4);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      flex: 1;
+      padding: 14px;
+      background: linear-gradient(135deg, #f4511e, #e13e10);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button-group button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+  {% endblock %}
+</head>
+<body>
+  {% block content %}
+  <div class="edit-container">
+    <!-- ✅ DYNAMIC TITLE -->
+    <h1>Edit Artwork</h1>
+    
+    <!-- ✅ CORRECT FORM TAG -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- The form fields will be rendered here -->
+        {{ form.as_p }}
+
+        <div class="button-group">
+            <button type="submit">Save Changes</button>
+            <a href="{% url 'art_gallery' %}" style="text-align: center; padding: 14px; background-color: #7f8c8d; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;">Cancel</a>
+        </div>
+    </form>
+</div>
+  </div>
+
+  <script>
+    function saveArt(action) {
+      event.preventDefault(); // prevent actual form submission
+
+      if (action === "save") {
+        alert("Artwork saved! Returning to gallery.");
+        window.location.href = "artpageartist.html"; // back to gallery
+      } 
+      else if (action === "saveAdd") {
+        alert("Artwork saved! Add another one.");
+        document.getElementById("editArtForm").reset();
+      } 
+      else if (action === "saveContinue") {
+        alert("Artwork saved! Continue editing this one.");
+        // Keep the values in place
+      }
+    }
+  </script>
+{% endblock %}

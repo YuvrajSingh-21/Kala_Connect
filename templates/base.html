@@ -228,7 +228,7 @@ footer p {
       </div>
       <div class="sidebar-footer">
         <a href="#"><span>⚙</span><span>Settings</span></a>
-        <a href="#"><span>🚪</span><span>Logout</span></a>
+        <a href="#" onclick=confirmLogout(event)><span>🚪</span><span>Logout</span></a>
       </div>
     </div>
 
@@ -270,6 +270,17 @@ footer p {
         alert("Searching for: " + query);
       }
     }
+    function confirmLogout(event) {
+    // This prevents the link from trying to navigate anywhere on its own
+    event.preventDefault();
+
+    // Show the browser's default confirmation dialog box
+    if (confirm("Are you sure you want to log out?")) {
+      // If the user clicks "OK", redirect them to the logout URL
+      window.location.href = "{% url 'logout' %}";
+    }
+    // If the user clicks "Cancel", do nothing.
+  }
 
     function loadPage(page) {
       fetch(page)

@@ -215,7 +215,7 @@ body {
     <div class="info-row"><span class="info-label">Art Category:</span><span class="info-value">{{ artist.art_category }}</span></div>
   </div>
 
-  <button class="edit-btn">✏️ Edit Profile</button>
+  <button class="edit-btn" onclick="window.location.href='{% url 'edit_profile' %}'">✏️ Edit Profile</button>
 
   <div class="story-section">
     <a href="{% url 'art_gallery' %}" class="story-btn">📖 Your Story Page</a>

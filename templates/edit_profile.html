@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+  {% block title %}Edit Profile{% endblock %}
+  {% block extra_css %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #c87b5e, #f1e9e6, #e3ca81);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 650px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease;
+    }
+    .form-container:hover{
+        scale: 1.07;
+        box-shadow: 0px 0px 4px 4px#f4691f;
+        transition: 2s;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #ff6b35;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .required {
+      color: red;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #ff6b35;
+      box-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .form-group img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 10px;
+      border: 3px solid #ff6b35;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .button-group button {
+      flex: 1;
+      padding: 14px;
+      background: linear-gradient(135deg, #ff6b35, #ff8c42);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .button-group button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+  {% endblock %}
+
+  {% block content %}
+<div class="form-container">
+    <h2>Edit Your Profile</h2>
+
+    <!-- This form will now submit to your view -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Current Profile Photo</label>
+            {% if artist.profile %}
+                <img src="{{ artist.profile.url }}" alt="Current Profile" class="current-photo">
+            {% else %}
+                <p>No profile photo uploaded.</p>
+            {% endif %}
+        </div>
+
+        <!-- Render the form fields automatically -->
+        <!-- 'as_p' wraps each field in a <p> tag -->
+        {{ form.as_p }}
+
+        <div class="button-group">
+            <button type="submit">Save Changes</button>
+            <a href="{% url 'artist_profile' %}" style="text-decoration: none; text-align: center; background: #888; color: white; padding: 14px; border-radius: 8px; flex: 1; font-weight: bold;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
